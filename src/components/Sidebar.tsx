@@ -9,7 +9,8 @@ import {
   ShoppingCart,
   Settings,
   Menu,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -56,20 +57,20 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
     <>
       <div 
         className={cn(
-          "fixed top-0 left-0 z-40 h-full bg-gray-900 text-white transition-all duration-300 flex flex-col",
+          "fixed top-0 left-0 z-40 h-full bg-sidebar border-r border-sidebar-border text-sidebar-foreground transition-all duration-300 flex flex-col",
           collapsed ? "w-16" : "w-64",
           "md:relative",
           className
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-gray-800">
+        <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
           {!collapsed && (
-            <h1 className="text-xl font-bold">Business Hub</h1>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">Business Hub</h1>
           )}
           <button 
             onClick={toggleSidebar}
             className={cn(
-              "p-2 rounded-md hover:bg-gray-800 text-gray-400 hover:text-white",
+              "p-2 rounded-md hover:bg-sidebar-accent text-sidebar-foreground/70 hover:text-sidebar-foreground",
               collapsed ? "mx-auto" : ""
             )}
           >
@@ -77,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto py-4">
+        <nav className="flex-1 overflow-y-auto py-6">
           <ul className="space-y-2 px-2">
             {menuItems.map((item) => (
               <li key={item.path}>
@@ -86,12 +87,12 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
                   className={cn(
                     "flex items-center p-3 rounded-md transition-colors",
                     location.pathname === item.path 
-                      ? "bg-blue-700 text-white" 
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white",
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground" 
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                     collapsed ? "justify-center" : "justify-start"
                   )}
                 >
-                  <item.icon size={20} />
+                  <item.icon size={20} className={location.pathname === item.path ? "text-current" : ""} />
                   {!collapsed && <span className="ml-3">{item.title}</span>}
                 </Link>
               </li>
@@ -99,21 +100,27 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
           </ul>
         </nav>
 
-        <div className="p-4 border-t border-gray-800">
+        <div className="p-4 border-t border-sidebar-border">
           <div className={cn(
             "flex items-center",
             collapsed ? "justify-center" : "justify-start"
           )}>
-            <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold">
               A
             </div>
             {!collapsed && (
               <div className="ml-3">
                 <p className="font-medium">Admin User</p>
-                <p className="text-xs text-gray-400">admin@example.com</p>
+                <p className="text-xs text-sidebar-foreground/70">admin@example.com</p>
               </div>
             )}
           </div>
+          {!collapsed && (
+            <button className="mt-4 w-full flex items-center justify-center gap-2 p-2 rounded-md text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors">
+              <LogOut size={18} />
+              <span>Log out</span>
+            </button>
+          )}
         </div>
       </div>
       
